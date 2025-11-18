@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Admin — College Voting</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header class="nav">
+<div class="brand">Admin</div>
+<nav>
+<a href="/">Home</a>
+<a href="/vote.html">Vote</a>
+<a href="/results.html">Results</a>
+</nav>
+</header>
+
+
+<main class="container">
+<section class="card grid">
+<div>
+<h3>Create Election</h3>
+<form id="createElection">
+<label>Title<input name="title" required></label>
+<label>Start (date & time)<input type="datetime-local" name="start" required></label>
+<label>End (date & time)<input type="datetime-local" name="end" required></label>
+<label>Admin Key<input type="password" name="key" required placeholder="admin key"></label>
+<div><button class="btn primary" type="submit">Create Election</button></div>
+</form>
+<p class="muted" id="createMsg"></p>
+</div>
+
+
+<div>
+<h3>Add Candidate</h3>
+<form id="addCandidate">
+<label>Election<select id="electionSelect"></select></label>
+<label>Name<input name="name" required></label>
+<label>Party<input name="party"></label>
+<label>Admin Key<input type="password" name="key" required placeholder="admin key"></label>
+<div><button class="btn" type="submit">Add Candidate</button></div>
+</form>
+<p class="muted" id="candidateMsg"></p>
+</div>
+</section>
+
+
+<section class="card">
+<h3>Existing Elections</h3>
+<div id="electionList">Loading...</div>
+</section>
+</main>
+
+
+<footer class="footer">Change the admin key in server.js before sharing.</footer>
+<script src="/app.js"></script>
+</body>
+</html>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Panel</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h2>Add Candidate</h2>
+    <input id="cname" placeholder="Candidate Name">
+    <input id="dept" placeholder="Department">
+    <button onclick="addCandidate()">Add</button>
+    <br><br>
+    <a href="vote.html"><button>Go to Voting</button></a>
+    <a href="result.html"><button>View Results</button></a>
+  </div>
+</body>
+<script src="script.js"></script>
+</html>
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Panel</title>
+  <style>
+    body {
+      font-family: Arial;
+      background: #f4f7ff;
+      padding: 40px;
+    }
+    .box {
+      background: white;
+      padding: 25px;
+      width: 400px;
+      margin-bottom: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #d1d1d1;
+    }
+    input, select, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 8px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background: #007bff;
+      color: white;
+      cursor: pointer;
+      border: none;
+      margin-top: 12px;
+    }
+    button:hover { background: #005fcc; }
+  </style>
+</head>
+<body>
+
+<h2>Admin Panel</h2>
+
+<!-- ADD ELECTION -->
+<div class="box">
+  <h3>Create Election</h3>
+  <input id="elTitle" placeholder="Election Title">
+  <label>Start Date & Time</label>
+  <input id="elStart" type="datetime-local">
+  <label>End Date & Time</label>
+  <input id="elEnd" type="datetime-local">
+  
+  <button onclick="addElection()">Create Election</button>
+</div>
+
+<!-- ADD CANDIDATE -->
+<div class="box">
+  <h3>Add Candidate</h3>
+
+  <input id="cname" placeholder="Candidate Name">
+  
+  <input id="cdept" placeholder="Department">
+
+  <select id="candidateElection"></select>
+
+  <button onclick="addCandidate()">Add Candidate</button>
+</div>
+
+<script>
+
+// Load Elections into dropdown
+async function loadElections() {
+  const res = await fetch("/elections");
+  const elections = await res.json();
+
+  const dropdown = document.getElementById("candidateElection");
+  dropdown.innerHTML = '<option value="">Select Election</option>';
+
+  elections.forEach(e => {
+    const opt = document.createElement("option");
+    opt.value = e.title;
+    opt.textContent = e.title;
+    dropdown.appendChild(opt);
+  });
+}
+loadElections();
+
+// Create Election
+async function addElection() {
+  let title = document.getElementById("elTitle").value;
+  let start = document.getElementById("elStart").value;
+  let end = document.getElementById("elEnd").value;
+
+  const res = await fetch("/admin/addElection", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ title, start, end })
+  });
+
+  const data = await res.json();
+  if (data.success) {
+    alert("Election Created!");
+    loadElections();
+  }
+}
+
+// Add Candidate
+async function addCandidate() {
+  let name = document.getElementById("cname").value;
+  let dept = document.getElementById("cdept").value;
+  let election = document.getElementById("candidateElection").value;
+
+  const res = await fetch("/admin/addCandidate", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ name, dept, election })
+  });
+
+  const data = await res.json();
+  if (data.success) {
+    alert("Candidate Added!");
+  }
+}
+
+</script>
+
+</body>
+</html>

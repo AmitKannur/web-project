@@ -1,0 +1,50 @@
+{
+  "admin": {
+    "username": "admin",
+    "password": "12345"
+  },
+  "elections": [
+    {
+      "title": "college_voting",
+      "start": "2025-11-18T15:50",
+      "end": "2025-11-18T15:59"
+    },
+    {
+      "title": "College_voting",
+      "start": "2025-11-18T15:55",
+      "end": "2025-11-18T16:07"
+    }
+  ],
+  "candidates": [
+    {
+      "name": "admit",
+      "dept": "",
+      "election": ""
+    },
+    {
+      "name": "admit",
+      "dept": "cse",
+      "election": "college_voting"
+    },
+    {
+      "name": "amit",
+      "dept": "cse",
+      "election": "college_voting"
+    },
+    {
+      "name": "",
+      "dept": "cse",
+      "election": "college_voting"
+    },
+    {
+      "name": "Amit",
+      "dept": "cse",
+      "election": "college_voting"
+    }
+  ],
+  "votes": {
+    "amit": 2,
+    "Amit": 4,
+    "": 1
+  }
+}

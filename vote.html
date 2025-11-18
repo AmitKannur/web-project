@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Vote — College Voting</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header class="nav">
+<div class="brand">College Voting</div>
+<nav>
+<a href="/">Home</a>
+<a href="/admin.html">Admin</a>
+<a href="/results.html">Results</a>
+</nav>
+</header>
+
+
+<main class="container">
+<section class="card">
+<h2 id="electionTitle">Loading election...</h2>
+<p class="muted" id="electionDates"></p>
+<div id="candidatesArea">Loading candidates...</div>
+</section>
+</main>
+
+
+<footer class="footer">Vote once — roll number prevents double voting (demo).</footer>
+<script src="/app.js"></script>
+</body>
+</html>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Vote</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body onload="loadCandidates()">
+  <h2>Vote Your Leader</h2>
+  <div id="candidateList"></div>
+</body>
+<script src="script.js"></script>
+</html>
